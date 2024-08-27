@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Layouts</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Manage Layouts</h1>
+        <div>
+            <button class="btn btn-secondary me-2" onclick="goBack()">Back</button>
+            <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-4">
+    <table class="table table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Serial Number</th>
+            <th>Layout Name</th>
+            <th>Assign User</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="layout, iterStat : ${layouts}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${layout.name}">Layout Name</td>
+            <td>
+                <select class="form-select" th:name="'userSelect' + ${layout.id}" multiple>
+                    <option th:each="user : ${users}" th:value=${user.id} th:text="${user.username}">
+                        User Name
+                    </option>
+                </select>
+            </td>
+            <td>
+                <button class="btn btn-primary" th:onclick="'assignUser(' + ${layout.id} + ')'">Assign User</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Include Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+
+    function goBack() {
+        window.history.back();
+    }
+
+    function assignUser(layoutId) {
+        const selectElement = document.querySelector('select[name="userSelect' + layoutId + '"]');
+        const selectedUsers = Array.from(selectElement.selectedOptions).map(option => Number(option.value));
+
+        console.log('Assigning users', selectedUsers, 'to layout', layoutId);
+
+
+        fetch('/admin/assignLayout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                layoutId: layoutId,
+                userIds: selectedUsers
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Users assigned successfully');
+        })
+        .catch(error => {
+            console.error('Error assigning users:', error);
+        });
+    }
+</script>
+</body>
+</html>
