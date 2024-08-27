@@ -39,7 +39,6 @@ public class LayoutService {
             assignment.setLayout(layout);
             layoutAssignmentRepository.save(assignment);
         }
-
     }
 
     public Layout getUserLayout(Long userId) {
