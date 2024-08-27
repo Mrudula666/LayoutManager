@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LayoutAssignmentRepository  extends JpaRepository<LayoutAssignment, Long> {
+public interface LayoutAssignmentRepository extends JpaRepository<LayoutAssignment, Long> {
 
     Optional<LayoutAssignment> findByUser(User user);
 }
