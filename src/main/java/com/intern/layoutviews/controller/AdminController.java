@@ -3,7 +3,6 @@ package com.intern.layoutviews.controller;
 import com.intern.layoutviews.entity.Layout;
 import com.intern.layoutviews.entity.User;
 import com.intern.layoutviews.request.AssignmentRequest;
-import com.intern.layoutviews.request.LayoutUpdateRequest;
 import com.intern.layoutviews.service.LayoutService;
 import com.intern.layoutviews.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -24,7 +23,6 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("layouts")
     public List<Layout> getAllLayouts() {
         return layoutService.getAllLayouts();
@@ -36,6 +34,7 @@ public class AdminController {
         model.addAttribute("layouts", layouts);
         return "layouts";
     }
+
     @RequestMapping("/manageLayouts")
     public String showManageLayoutsPage(Model model) {
         List<Layout> layouts = layoutService.getAllLayouts();
@@ -53,11 +52,10 @@ public class AdminController {
     }
 
 
-
     @PostMapping("/assignLayout")
     public ResponseEntity<String> assignLayoutToUser(@RequestBody AssignmentRequest request) {
 
-        for (Long userId: request.getUserIds()){
+        for (Long userId : request.getUserIds()) {
             layoutService.assignLayoutToUser(userId, request.getLayoutId());
         }
 

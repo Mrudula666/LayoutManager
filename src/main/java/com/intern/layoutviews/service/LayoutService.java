@@ -33,7 +33,7 @@ public class LayoutService {
         Layout layout = layoutRepository.findById(layoutId).orElseThrow();
 
         Optional<LayoutAssignment> assignedLayout = layoutAssignmentRepository.findByUser(user);
-        if (assignedLayout.isEmpty()){
+        if (assignedLayout.isEmpty()) {
             LayoutAssignment assignment = new LayoutAssignment();
             assignment.setUser(user);
             assignment.setLayout(layout);
